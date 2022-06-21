@@ -1,3 +1,5 @@
+import { Router } from "itty-router";
+
 /**
  * Welcome to Cloudflare Workers! This is your first worker.
  *
@@ -11,6 +13,7 @@
 export interface Env {
   // Example binding to KV. Learn more at https://developers.cloudflare.com/workers/runtime-apis/kv/
   // MY_KV_NAMESPACE: KVNamespace;
+  IMAGES: KVNamespace;
   //
   // Example binding to Durable Object. Learn more at https://developers.cloudflare.com/workers/runtime-apis/durable-objects/
   // MY_DURABLE_OBJECT: DurableObjectNamespace;
@@ -19,12 +22,15 @@ export interface Env {
   // MY_BUCKET: R2Bucket;
 }
 
+const router = Router();
+
+router
+  .get("*", () => new Response("Not Found.", { status: 404 }));
+
+async function fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+  return router.handle(request);
+}
+
 export default {
-  async fetch(
-    request: Request,
-    env: Env,
-    ctx: ExecutionContext
-  ): Promise<Response> {
-    return new Response("Hello World!");
-  },
+  fetch
 };
