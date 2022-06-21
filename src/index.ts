@@ -1,5 +1,8 @@
 import { Router } from "itty-router";
 
+import Notification from "./notification";
+import { getUid } from "./random";
+
 /**
  * Welcome to Cloudflare Workers! This is your first worker.
  *
@@ -25,7 +28,29 @@ export interface Env {
 const router = Router();
 
 router
+  .get("/img/:id", ({ params }) => {
+    if (!params) return new Response("Bad Request", { status: 400 });
+    return new Response("Hallo Welt" + params["id"]);
+  })
+  .get("/", () => new Response("dieklingel.com"))
   .get("*", () => new Response("Not Found.", { status: 404 }));
+
+router
+  .post("/fcm/send", async (request: Request) => {
+    try {
+      const body = await request.json();
+      const notification: Notification = Notification.fromJSON(body);
+      sendToFcm(notification);
+    } catch (exception) {
+      return new Response(String(exception), { status: 400 });
+    }
+    return new Response(getUid());
+  })
+  .post("*", () => new Response("Not Found", { status: 404 }));
+
+async function sendToFcm(notification: Notification): Promise<void> {
+
+}
 
 async function fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
   return router.handle(request);
