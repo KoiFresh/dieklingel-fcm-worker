@@ -12,6 +12,9 @@ export default class Notification {
 		if (!input["body"]) {
 			throw new TypeError("body cannot be undefined");
 		}
+		if (input["image"]) {
+			notification.image = String(input["image"]);
+		}
 		return notification;
 	}
 
@@ -20,4 +23,5 @@ export default class Notification {
 	public tokens: string[] = [];
 	public title: string = "";
 	public body: string = "";
+	public image: string | null = null;
 }
