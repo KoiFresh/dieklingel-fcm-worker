@@ -3,7 +3,6 @@ import { Router } from "itty-router";
 import Notification from "./notification";
 import { getUid } from "./random";
 import { base64ToUint8Array } from "./convert";
-
 /**
  * Welcome to Cloudflare Workers! This is your first worker.
  *
@@ -66,6 +65,7 @@ async function sendToFcm(notification: Notification, env: Env): Promise<void> {
     await env.IMAGES.put(uid, notification.image, { expirationTtl: 60 });
   }
   console.log(uid);
+  // send notification
 }
 
 async function fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
