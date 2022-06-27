@@ -12,6 +12,7 @@ export default class Notification {
 		if (!input["body"]) {
 			throw new TypeError("body cannot be undefined");
 		}
+		notification.body = String(input["body"]);
 		if (input["image"]) {
 			notification.image = String(input["image"]);
 		}
