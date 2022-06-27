@@ -30,3 +30,11 @@ an example body of a request could look like this:
 ```
 
 This would trigger a push notification.
+
+## cloudflare worker
+
+To run this worker locally, you have to execute:
+```bash
+wrangler dev
+```
+also checkout the [cloudflare docs](https://developers.cloudflare.com/workers/) for more information
