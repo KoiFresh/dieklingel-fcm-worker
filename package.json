@@ -12,6 +12,7 @@
     "deploy": "wrangler publish"
   },
   "dependencies": {
+    "@sagi.io/workers-jwt": "^0.0.22",
     "itty-router": "^2.6.1"
   }
 }
