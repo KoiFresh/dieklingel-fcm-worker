@@ -38,8 +38,8 @@ async function getAccessToken() {
   return accessToken
 }
 
-async function sendMessage(message: any, token: any) {
-  await fetch("https://fcm.googleapis.com/v1/projects/dieklingel/messages:send", {
+async function sendMessage(message: any, token: any): Promise<Response> {
+  return await fetch("https://fcm.googleapis.com/v1/projects/dieklingel/messages:send", {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

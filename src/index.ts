@@ -38,29 +38,45 @@ router
       return new Response(binary, {
         headers: {
           "Content-Type": "image/jpeg",
-          "Content-Length": binary.length.toString()
+          "Content-Length": binary.length.toString(),
+          "Access-Control-Allow-Origin": "*"
         },
       });
     }
     return new Response("Bad Request", { status: 400 });
   })
   .get("/", (request: Request) => new Response(request.url))
-  .get("*", () => new Response("Not Found.", { status: 404 }));
+  .get("*", () => new Response("Not Found.", {
+    status: 404,
+    headers: {
+      "Access-Control-Allow-Origin": "*"
+    }
+  }));
 
 router
   .post("/fcm/send", async (request: Request, env: Env) => {
+    let response = [];
     try {
       const body = await request.json();
       const notification: Notification = Notification.fromJSON(body);
-      await sendToFcm(notification, env);
+      response = await sendToFcm(notification, env);
     } catch (exception) {
-      return new Response(String(exception), { status: 400 });
+      return new Response(String(exception), {
+        status: 400, headers: {
+          "Access-Control-Allow-Origin": "*"
+        }
+      });
     }
-    return new Response("Ok", { status: 200 });
+    return new Response(JSON.stringify(response), {
+      status: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*"
+      }
+    });
   })
   .post("*", () => new Response("Not Found", { status: 404 }));
 
-async function sendToFcm(notification: Notification, env: Env): Promise<void> {
+async function sendToFcm(notification: Notification, env: Env): Promise<any> {
   let uid: string = getUid();
   if (notification.image) {
     await env.IMAGES.put(uid, notification.image, { expirationTtl: 60 });
@@ -69,6 +85,7 @@ async function sendToFcm(notification: Notification, env: Env): Promise<void> {
   // send notification
   let token: any = await firebase.getAccessToken();
   let img_url = "https://fcm-worker.dieklingel.workers.dev/img/" + uid;
+  let response_body = [];
   for (let device_token of notification.tokens) {
     let fcm = {
       "message": {
@@ -99,8 +116,10 @@ async function sendToFcm(notification: Notification, env: Env): Promise<void> {
         }
       }
     };
-    firebase.sendMessage(fcm, token["access_token"]);
+    let r: Response = await firebase.sendMessage(fcm, token["access_token"]);
+    response_body.push({ "status": r.status, "statusText": r.statusText });
   }
+  return response_body;
 }
 
 async function fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {

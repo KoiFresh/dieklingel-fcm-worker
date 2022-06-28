@@ -4,5 +4,5 @@ compatibility_date = "2022-06-21"
 node_compat = true 
 
 kv_namespaces = [
-  { binding = "IMAGES", id = "9b3ce91bd0d642b3a15066ff753473fc", preview_id = "9b3ce91bd0d642b3a15066ff753473fc" }
+  { binding = "IMAGES", id = "3fb22a79a21e4e849b6953d123fbd2e1"}
 ]
