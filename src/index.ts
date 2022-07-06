@@ -18,6 +18,7 @@ export interface Env {
   // MY_KV_NAMESPACE: KVNamespace;
   FCM_AUTH: string;
   IMAGES: KVNamespace;
+  TOKENS: KVNamespace;
   //
   // Example binding to Durable Object. Learn more at https://developers.cloudflare.com/workers/runtime-apis/durable-objects/
   // MY_DURABLE_OBJECT: DurableObjectNamespace;
@@ -81,9 +82,20 @@ async function sendToFcm(notification: Notification, env: Env): Promise<any> {
   if (notification.image) {
     await env.IMAGES.put(uid, notification.image, { expirationTtl: 60 });
   }
-  firebase.init(JSON.parse(env.FCM_AUTH));
+  let oauth2: string;
+  let savedToken: string | null = await env.TOKENS.get("FcmOauth2");
+  if (savedToken != null) {
+    oauth2 = savedToken;
+  } else {
+    firebase.init(JSON.parse(env.FCM_AUTH));
+    let token: any = await firebase.getAccessToken();
+    oauth2 = token["access_token"];
+    await env.TOKENS.put("FcmOauth2", oauth2, { expirationTtl: 600 });
+  }
+
+  //firebase.init(JSON.parse(env.FCM_AUTH));
   // send notification
-  let token: any = await firebase.getAccessToken();
+  //let token: any = await firebase.getAccessToken();
   let img_url = "https://fcm-worker.dieklingel.workers.dev/img/" + uid;
   let response_body = [];
   for (let device_token of notification.tokens) {
@@ -116,8 +128,8 @@ async function sendToFcm(notification: Notification, env: Env): Promise<any> {
         }
       }
     };
-    let r: Response = await firebase.sendMessage(fcm, token["access_token"]);
-    response_body.push({ "status": r.status, "statusText": r.statusText });
+    let r: Response = await firebase.sendMessage(fcm, oauth2);
+    response_body.push({ "status": r.status, "statusText": r.statusText, "debug": { "oauth": oauth2 } });
   }
   return response_body;
 }
