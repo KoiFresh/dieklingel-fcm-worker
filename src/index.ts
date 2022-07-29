@@ -107,7 +107,8 @@ async function sendToFcm(notification: Notification, env: Env): Promise<any> {
             "title": notification.title,
             "body": notification.body,
             "sound": "ringtone",
-            "icon": "icon_16x16"
+            "icon": "icon_16x16",
+            "image": img_url,
           }
         },
         "apns": {
