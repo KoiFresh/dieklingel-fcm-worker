@@ -1,9 +1,9 @@
 name = "fcm-worker"
 main = "src/index.ts"
 compatibility_date = "2022-06-21"
-node_compat = true 
+node_compat = false
 
 kv_namespaces = [
-  { binding = "IMAGES", id = "3fb22a79a21e4e849b6953d123fbd2e1"},
-  { binding = "TOKENS", id = "f0a2df0927014dc6be697e11baed27be"}
+  { binding = "IMAGES", id = "3fb22a79a21e4e849b6953d123fbd2e1", preview_id = "9b3ce91bd0d642b3a15066ff753473fc"},
+  { binding = "TOKENS", id = "f0a2df0927014dc6be697e11baed27be", preview_id = "d31cee2b5e1849bc99eb64580e5dfb93"}
 ]
