@@ -1,3 +1,5 @@
+# Based on https://raw.githubusercontent.com/github/gitignore/main/Node.gitignore
+
 # Logs
 
 logs
@@ -166,6 +168,5 @@ dist
 .yarn/install-state.gz
 .pnp.\*
 
-# wrangler project
-
-.dev.vars
+# mac os specific
+.DS_Store
