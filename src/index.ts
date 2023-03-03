@@ -112,15 +112,18 @@ async function sendToFcm(notification: Notification, env: Env): Promise<any> {
           }
         },
         "apns": {
+          "headers": {
+            "apns-collapse-id": notification.id ?? getUid(24),
+            "apns-priority": "10"
+          },
           "payload": {
             "aps": {
               "alert": {
                 "title": notification.title,
-                "subtitle": "dieklingel.com",
                 "body": notification.body,
               },
               "sound": "ringtone.wav",
-              "mutable-content": 1
+              "mutable-content": notification.image != null ? 1 : 0
             }
           },
           "fcm_options": {

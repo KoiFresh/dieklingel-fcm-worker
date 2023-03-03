@@ -16,6 +16,9 @@ export default class Notification {
 		if (input["image"]) {
 			notification.image = String(input["image"]);
 		}
+		if (input["id"]) {
+			notification.id = String(input["id"]);
+		}
 		return notification;
 	}
 
@@ -25,4 +28,5 @@ export default class Notification {
 	public title: string = "";
 	public body: string = "";
 	public image: string | null = null;
+	public id: string | null = null;
 }
