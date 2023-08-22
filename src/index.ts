@@ -103,7 +103,7 @@ async function sendToFcm(notification: Notification, env: Env): Promise<any> {
       "message": {
         "token": device_token,
         "android": {
-          "notification": {
+          "data": {
             "title": notification.title,
             "body": notification.body,
             "sound": "ringtone",
@@ -114,7 +114,8 @@ async function sendToFcm(notification: Notification, env: Env): Promise<any> {
         "apns": {
           "headers": {
             "apns-collapse-id": notification.id ?? getUid(24),
-            "apns-priority": "10"
+            "apns-expiration": "0",
+            "apns-priority": "10",
           },
           "payload": {
             "aps": {
