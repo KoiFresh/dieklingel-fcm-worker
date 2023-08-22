@@ -1,6 +1,6 @@
 # dieklingel-fcm-worker
 
-This repo contains a worker running on cloudlflare, providing an environment and exposing an api, to send 
+This repo contains a worker running on cloudlflare, providing an environment and exposing an api, to send
 a push notification within [firebase](https://firebase.google.com) to the [dieklingel-app](https://dieklingel.com/#/app).
 
 ## API
@@ -20,12 +20,13 @@ To use the api you have to make a POST request to the worker, running on fcm-wor
 "image" contains an image, smaller than 5MB, as base64 string. The image will deliverd into the push notification.
 
 an example body of a request could look like this:
+
 ```json
 {
-	"tokens": [ "exampletoken1", "exampletoken2" ],
-	"title": "Hello World",
-	"body": "This is a push notification",
-	"image": "data:image/png;base64,iVB..."
+ "tokens": [ "exampletoken1", "exampletoken2" ],
+ "title": "Hello World",
+ "body": "This is a push notification",
+ "image": "data:image/png;base64,iVB..."
 }
 ```
 
@@ -34,7 +35,9 @@ This would trigger a push notification.
 ## cloudflare worker
 
 To run this worker locally, you have to execute:
+
 ```bash
 wrangler dev
 ```
+
 also checkout the [cloudflare docs](https://developers.cloudflare.com/workers/) for more information
