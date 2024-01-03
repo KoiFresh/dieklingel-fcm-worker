@@ -170,6 +170,8 @@ dist
 
 .dev.vars
 
-# custom
-
+# MacOS Specific
 .DS_Store
+
+# VSCode Specific
+.vscode
