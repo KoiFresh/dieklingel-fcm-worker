@@ -18,9 +18,9 @@ class NotificationPayload {
         "the NotificationPayload has to have a key 'tokens' of type string[]"
       );
     }
-    if (data["tokens"].every((item) => typeof item === "string")) {
+    if (!data["tokens"].every((item) => typeof item === "string")) {
       throw Error(
-        "the NotificationPayload has to have a key 'tokens' of type string[]"
+        "all items in the NotificationPayload's 'tokens' array have to be of type string"
       );
     }
     if (!("title" in data) || typeof data["title"] !== "string") {

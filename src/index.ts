@@ -31,11 +31,7 @@ const router = Router();
 
 router
   .get("/", (request: Request) => new Response(request.url))
-  .get("/devices/:deviceId", (req, env) => app.readDevice(req, env))
-  .post("/devices", (req, env) => app.registerNewDevice(req, env))
-  .post("/notifications", (req, env) => app.sendPushNotification(req, env))
-  .delete("/devices/:deviceId", (req, env) => app.deleteDevice(req, env))
-  .patch("/devices/:deviceId", (req, env) => app.updateDevice(req, env))
+  .post("/notify", (req, env) => app.sendPushNotification(req, env))
   .all("*", () => new Response("Not Found", { status: 404 }));
 
 async function fetch(

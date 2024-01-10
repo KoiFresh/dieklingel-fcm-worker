@@ -57,23 +57,23 @@ class Firebase {
 
     for (let token of notification.tokens) {
       let message = {
-        message: {
-          token: token,
-          data: {
-            title: notification.title,
-            body: notification.body,
+        "message": {
+          "token": token,
+          "notification": {
+            "title": notification.title,
+            "body": notification.body,
           },
-          android: {
-            ttl: "0",
-            priority: "HIGH",
+          "android": {
+            "ttl": "0s",
+            "priority": "HIGH",
           },
-          apns: {
-            headers: {
+          "apns": {
+            "headers": {
               "apns-expiration": "0",
               "apns-priority": "10",
             },
-            payload: {
-              aps: {
+            "payload": {
+              "aps": {
                 "mutable-content": 1,
               },
             },
@@ -87,7 +87,7 @@ class Firebase {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer " + this._token,
+            "Authorization": "Bearer " + this._token,
           },
           redirect: "follow",
           body: JSON.stringify(message),

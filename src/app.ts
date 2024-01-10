@@ -143,24 +143,17 @@ class App {
     let notification = new Notification();
     notification.title = payload.title;
     notification.body = payload.message;
-
-    for (let token of payload.tokens) {
-      let pushToken = await env.TOKENS.get(token);
-      if (pushToken == null) {
-        return new Response(
-          `at least one of the provided tokens does not exist`,
-          {
-            status: 400,
-          }
-        );
-      }
-      notification.tokens.push(pushToken);
-    }
+    notification.tokens = payload.tokens;
 
     let firebase = await this.firebase(env);
-    firebase.sendNotification(notification);
+    let response = await firebase.sendNotification(notification);
 
-    return new Response();
+    return new Response(JSON.stringify(response.map((r) => {
+      return {
+        "status": r.status,
+        "statusText": r.statusText,
+      }
+    })));
   }
 }
 
